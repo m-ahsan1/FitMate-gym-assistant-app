@@ -5,6 +5,13 @@ const woukoutRoutes = require("./routes/workoutRoutes");
 
 const app = express();
 
+app.use(express.json());
+
+app.use((req, res, next) => {
+  console.log(req.path, res.method);
+  next();
+});
+
 app.use("/api/workouts", woukoutRoutes);
 
 mongoose
