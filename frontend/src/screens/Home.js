@@ -29,6 +29,7 @@ function Home() {
         workouts.map((workout) => (
           <div key={workout._id}>
             <WorkoutCard
+              id={workout._id}
               title={workout.title}
               reps={workout.reps}
               load={workout.load}
