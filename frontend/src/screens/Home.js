@@ -1,10 +1,11 @@
 import React from "react";
-import { useEffect, useState } from "react";
-import WorkoutCard from "./WorkoutCard";
-import NewWorkout from "./NewWorkout";
+import { useEffect } from "react";
+import WorkoutCard from "../components/WorkoutCard";
+import NewWorkout from "../components/NewWorkout";
+import { useWorkoutsContext } from "../hooks/useWorkoutsContext";
 
 function Home() {
-  const [workouts, setWorkouts] = useState(null);
+  const { workouts, dispatch } = useWorkoutsContext();
 
   useEffect(() => {
     //fetch data from api https://localhost:4000/api/workouts
@@ -12,7 +13,10 @@ function Home() {
       const res = await fetch("http://localhost:4000/api/workouts");
       const json = await res.json();
       if (res.ok) {
-        setWorkouts(json);
+        dispatch({
+          type: "GET_WORKOUTS",
+          payload: json,
+        });
       }
     };
 
