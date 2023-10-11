@@ -15,6 +15,9 @@ function Nav() {
         <li className="hover:scale-105 duration-300">
           <Link to="/dashboard">Dashboard</Link>
         </li>
+        <li className="hover:scale-105 duration-300">
+          <Link to="/sections">Sections</Link>
+        </li>
       </ul>
     </div>
   );

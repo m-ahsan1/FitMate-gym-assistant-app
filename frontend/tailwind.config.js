@@ -5,6 +5,8 @@ module.exports = {
     extend: {
       fontFamily: {
         Mynerve: "'Mynerve', cursive", // Ensure fonts with spaces have " " surrounding it.
+
+        Raleway: " 'Raleway', sans-serif",
       },
     },
   },
