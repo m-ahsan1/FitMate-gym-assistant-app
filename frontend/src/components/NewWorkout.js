@@ -6,17 +6,22 @@ function NewWorkout() {
   const [title, setTitle] = useState("");
   const [reps, setReps] = useState("");
   const [load, setLoad] = useState("");
+  const [status, setStatus] = useState("");
 
   const [error, setError] = useState(null);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     //POST data to
+
+    setStatus("active");
     const res = await fetch("http://localhost:4000/api/workouts", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ title, reps, load }),
+      body: JSON.stringify({ title, reps, load, status }),
     });
     const json = await res.json();
     if (!res.ok) {

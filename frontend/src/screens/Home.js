@@ -5,13 +5,12 @@ import NewWorkout from "../components/NewWorkout";
 import { useWorkoutsContext } from "../hooks/useWorkoutsContext";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
+import "reactjs-popup/dist/index.css";
+
 function Home() {
   const { workouts, dispatch } = useWorkoutsContext();
 
-  const [CompletedWorkouts, setCompletedWorkouts] = useState([]);
-
   useEffect(() => {
-    //fetch data from api https://localhost:4000/api/workouts
     const fetchWorkouts = async () => {
       const res = await fetch("http://localhost:4000/api/workouts");
       const json = await res.json();
@@ -26,6 +25,27 @@ function Home() {
     fetchWorkouts();
   }, []);
 
+  const handleUpdate = async (id, updatedData) => {
+    try {
+      const response = await fetch("http://localhost:4000/api/workouts/" + id, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedData),
+      });
+
+      if (response.ok) {
+        const updatedDocument = await response.json();
+        console.log("Document updated successfully", updatedDocument);
+        // Handle the updated data in your React component's state or UI as needed.
+      } else {
+        console.error("Error updating document");
+      }
+    } catch (error) {
+      console.error("Error updating document", error);
+    }
+  };
   const onDragEnd = (result) => {
     const { source, destination } = result;
     if (!destination) return;
@@ -34,22 +54,25 @@ function Home() {
       destination.index === source.index
     )
       return;
-    let add,
-      active = workouts,
-      completed = CompletedWorkouts;
 
+    let id = workouts[source.index]._id;
+    let active = workouts[source.index];
     if (source.droppableId === "active") {
-      add = active[source.index];
-      active.splice(source.index, 1);
+      //update workout and put value as null in the database
+
+      active.status = "null";
+      handleUpdate(id, active);
     } else {
-      add = completed[source.index];
-      completed.splice(source.index, 1);
+      active.status = "null";
+      handleUpdate(id, active);
     }
 
     if (destination.droppableId === "active") {
-      active.splice(destination.index, 0, add);
+      active.status = "active";
+      handleUpdate(id, active);
     } else {
-      completed.splice(destination.index, 0, add);
+      active.status = "completed";
+      handleUpdate(id, active);
     }
   };
 
@@ -67,16 +90,20 @@ function Home() {
               {workouts &&
                 workouts.map((workout, index) => (
                   <div key={workout._id}>
-                    <WorkoutCard
-                      index={index}
-                      id={workout._id}
-                      title={workout.title}
-                      reps={workout.reps}
-                      load={workout.load}
-                    />
+                    {workout.status === "active" ? (
+                      <WorkoutCard
+                        index={index}
+                        id={workout._id}
+                        title={workout.title}
+                        reps={workout.reps}
+                        load={workout.load}
+                      />
+                    ) : (
+                      <></>
+                    )}
                   </div>
                 ))}
-              ,
+
               <NewWorkout />
               {provided.placeholder}
             </div>
@@ -91,16 +118,20 @@ function Home() {
               {...provided.droppableProps}
             >
               <h1>Completed Workouts</h1>
-              {CompletedWorkouts &&
-                CompletedWorkouts.map((workout, index) => (
+              {workouts &&
+                workouts.map((workout, index) => (
                   <div key={workout._id}>
-                    <WorkoutCard
-                      index={index}
-                      id={workout._id}
-                      title={workout.title}
-                      reps={workout.reps}
-                      load={workout.load}
-                    />
+                    {workout.status === "completed" ? (
+                      <WorkoutCard
+                        index={index}
+                        id={workout._id}
+                        title={workout.title}
+                        reps={workout.reps}
+                        load={workout.load}
+                      />
+                    ) : (
+                      <></>
+                    )}
                   </div>
                 ))}
               {provided.placeholder}
