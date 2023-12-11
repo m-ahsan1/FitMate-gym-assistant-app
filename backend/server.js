@@ -1,7 +1,6 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
-const woukoutRoutes = require("./routes/workoutRoutes");
 const applicationRoutes = require("./routes/applicationRoutes");
 const cors = require("cors");
 
@@ -20,7 +19,6 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/api/workouts", woukoutRoutes);
 app.use("/api/applications", applicationRoutes);
 
 mongoose

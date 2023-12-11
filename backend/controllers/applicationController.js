@@ -2,15 +2,15 @@ const Application = require("../models/applicationModel");
 const mongoose = require("mongoose");
 
 const createApplication = async (req, res) => {
-  const { companyName, jobTitle, applicationDate, applicationStatus, note } =
+  const { jobTitle, companyTitle, applicationDate, applicationStatus, notes } =
     req.body;
   try {
     const application = await Application.create({
-      companyName,
       jobTitle,
+      companyTitle,
       applicationDate,
       applicationStatus,
-      note,
+      notes,
     });
     res.status(200).json(application);
   } catch (error) {
