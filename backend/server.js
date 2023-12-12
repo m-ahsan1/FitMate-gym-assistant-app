@@ -30,9 +30,9 @@ app.get("/api/jobs/", async (req, res) => {
     getJson(
       {
         engine: "google_jobs",
-        q: "barista",
+        q: "software engineer",
         hl: "en",
-        chips: "job_family_1:starbucks barista,job_family_1:team member",
+        chips: "job_family_1:frontend developer,job_family_1:team member",
         api_key:
           "04ec59c9ebdef266f014b34e47d48e246331b3fd784f0088a32ffab9eb9852a3",
       },
